@@ -1,7 +1,11 @@
-Cheese writing example.
-More Cheese!
-Cheddar
-Gouda
-Brie
-Camembert
-Roquefort
+Pasteurized milk cheeses: 2
+Raw milk cheeses: 1
+Organic cheeses with MoisturePercent > 41.0: 2
+
+Milk type tallies:
+  Cow: 1
+  Goat: 1
+  Ewe: 0
+  Buffalo: 1
+
+Most common milk type: Cow

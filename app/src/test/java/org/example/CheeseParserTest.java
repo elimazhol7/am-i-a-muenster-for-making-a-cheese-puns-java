@@ -4,27 +4,25 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 class CheeseParserTest {
 
     @Test
-    void parseCsvLine_handlesQuotedCommas() {
-        String line = "Id,\"Milk,Treat\",Organic,MoisturePercent,MilkTypeEn";
-        String[] cols = CheeseParser.parseCsvLine(line);
-        assertArrayEquals(new String[] {
-                "Id", "Milk,Treat", "Organic", "MoisturePercent", "MilkTypeEn"
-        }, cols);
+    void parseCsvLine_handlesQuotes() {
+        String line = "A,\"B, inside\",C";
+        String[] parts = CheeseParser.parseCsvLine(line);
+        assertArrayEquals(new String[]{"A","B, inside","C"}, parts);
     }
 
     @Test
-    void headerToIndex_lowercasesAndMaps() {
-        String[] header = {"Id", "MilkTreatmentTypeEn", "Organic", "MoisturePercent", "MilkTypeEn"};
-        Map<String,Integer> idx = CheeseParser.headerToIndex(header);
-        assertEquals(0, idx.get("id"));
-        assertEquals(1, idx.get("milktreatmenttypeen"));
-        assertEquals(2, idx.get("organic"));
-        assertEquals(3, idx.get("moisturepercent"));
-        assertEquals(4, idx.get("milktypeen"));
+    void headerToIndex_lowercasesAndTrims() {
+        String[] header = {" MilkTypeEn ", "Organic"};
+        Map<String,Integer> map = CheeseParser.headerToIndex(header);
+        assertTrue(map.containsKey("milktypeen"));
+        assertTrue(map.containsKey("organic"));
+        assertEquals(0, map.get("milktypeen"));
+        assertEquals(1, map.get("organic"));
     }
 }

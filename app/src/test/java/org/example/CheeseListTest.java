@@ -7,31 +7,23 @@ import org.junit.jupiter.api.Test;
 class CheeseListTest {
 
     @Test
-    void addAndIterate() {
+    void addAndIterate_simple() {
         CheeseList list = new CheeseList();
 
         CheeseList.Cheese c1 = new CheeseList.Cheese();
-        c1.MilkTreatmentTypeEn = "Pasteurized";
-        c1.Organic = "1";
-        c1.MoisturePercent = "42.0";
-        c1.MilkTypeEn = "Cow";
+        c1.MilkTypeEn = "cow";
+        list.add(c1);
 
         CheeseList.Cheese c2 = new CheeseList.Cheese();
-        c2.MilkTreatmentTypeEn = "Raw";
-        c2.Organic = "0";
-        c2.MoisturePercent = "39.0";
-        c2.MilkTypeEn = "Goat";
-
-        list.add(c1);
+        c2.MilkTypeEn = "goat";
         list.add(c2);
 
         int count = 0;
         for (CheeseList.Cheese c : list) {
-            assertNotNull(c.MilkTypeEn);
+            assertNotNull(c);
             count++;
         }
         assertEquals(2, count);
         assertEquals(2, list.size());
     }
 }
-

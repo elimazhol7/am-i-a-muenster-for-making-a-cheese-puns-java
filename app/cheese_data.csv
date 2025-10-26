@@ -1,0 +1,4 @@
+MilkTreatmentTypeEn,Organic,MoisturePercent,MilkTypeEn
+Pasteurized,1,55.0,cow
+Raw,0,40.0,goat
+Pasteurized,1,60.0,buffalo

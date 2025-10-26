@@ -1,42 +1,41 @@
 package org.example;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class CheeseReaderTest {
 
+    @TempDir Path tmp;
+
     @Test
-    void next_readsRows(@TempDir File temp) throws Exception {
-        File csv = new File(temp, "cheese.csv");
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(csv))) {
-            w.write("Id,MilkTreatmentTypeEn,Organic,MoisturePercent,MilkTypeEn\n");
-            w.write("1,Pasteurized,1,42.0,Cow\n");
-            w.write("2,Raw,0,39.0,Goat\n");
+    void readsTwoRows_thenNull() throws Exception {
+        Path csv = tmp.resolve("cheese.csv");
+        try (BufferedWriter w = Files.newBufferedWriter(csv)) {
+            w.write("MilkTreatmentTypeEn,Organic,MoisturePercent,MilkTypeEn\n");
+            w.write("Pasteurized,1,55.0,cow\n");
+            w.write("Raw,0,40.0,goat\n");
         }
 
-        try (CheeseReader reader = new CheeseReader(csv.getAbsolutePath())) {
-            CheeseReader.Row r1 = reader.next();
-            assertNotNull(r1);
-            assertEquals("Pasteurized", r1.MilkTreatmentTypeEn);
-            assertEquals("1", r1.Organic);
-            assertEquals("42.0", r1.MoisturePercent);
-            assertEquals("Cow", r1.MilkTypeEn);
+        try (CheeseReader r = new CheeseReader(csv.toString())) {
+            CheeseReader.Row a = r.next();
+            assertEquals("Pasteurized", a.MilkTreatmentTypeEn);
+            assertEquals("1", a.Organic);
+            assertEquals("55.0", a.MoisturePercent);
+            assertEquals("cow", a.MilkTypeEn);
 
-            CheeseReader.Row r2 = reader.next();
-            assertNotNull(r2);
-            assertEquals("Raw", r2.MilkTreatmentTypeEn);
-            assertEquals("0", r2.Organic);
-            assertEquals("39.0", r2.MoisturePercent);
-            assertEquals("Goat", r2.MilkTypeEn);
+            CheeseReader.Row b = r.next();
+            assertEquals("Raw", b.MilkTreatmentTypeEn);
+            assertEquals("0", b.Organic);
+            assertEquals("40.0", b.MoisturePercent);
+            assertEquals("goat", b.MilkTypeEn);
 
-            assertNull(reader.next()); // EOF
+            assertNull(r.next());
         }
     }
 }

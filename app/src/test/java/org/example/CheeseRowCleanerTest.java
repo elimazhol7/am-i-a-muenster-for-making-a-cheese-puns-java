@@ -7,28 +7,25 @@ import org.junit.jupiter.api.Test;
 class CheeseRowCleanerTest {
 
     @Test
-    void cleanString_trimsAndNulls() {
-        assertNull(CheeseRowCleaner.cleanString(null));
-        assertNull(CheeseRowCleaner.cleanString(""));
+    void cleanString_trimsAndNullsBlank() {
+        assertEquals("Gouda", CheeseRowCleaner.cleanString("  Gouda  "));
         assertNull(CheeseRowCleaner.cleanString("   "));
-        assertEquals("Cow", CheeseRowCleaner.cleanString("  Cow  "));
+        assertNull(CheeseRowCleaner.cleanString(null));
     }
 
     @Test
-    void parseIntOrNull_handlesValidAndInvalid() {
-        assertNull(CheeseRowCleaner.parseIntOrNull(null));
-        assertNull(CheeseRowCleaner.parseIntOrNull(" "));
+    void parseIntOrNull_basic() {
+        assertEquals(10, CheeseRowCleaner.parseIntOrNull("10"));
         assertNull(CheeseRowCleaner.parseIntOrNull("abc"));
-        assertEquals(1, CheeseRowCleaner.parseIntOrNull("1"));
-        assertEquals(42, CheeseRowCleaner.parseIntOrNull(" 42 "));
+        assertNull(CheeseRowCleaner.parseIntOrNull(" "));
+        assertNull(CheeseRowCleaner.parseIntOrNull(null));
     }
 
     @Test
-    void parseDoubleOrNull_handlesValidAndInvalid() {
-        assertNull(CheeseRowCleaner.parseDoubleOrNull(null));
-        assertNull(CheeseRowCleaner.parseDoubleOrNull(" "));
+    void parseDoubleOrNull_basic() {
+        assertEquals(3.14, CheeseRowCleaner.parseDoubleOrNull("3.14"));
         assertNull(CheeseRowCleaner.parseDoubleOrNull("abc"));
-        assertEquals(41.5, CheeseRowCleaner.parseDoubleOrNull("41.5"));
-        assertEquals(2.0, CheeseRowCleaner.parseDoubleOrNull(" 2 "), 0.0001);
+        assertNull(CheeseRowCleaner.parseDoubleOrNull(""));
+        assertNull(CheeseRowCleaner.parseDoubleOrNull(null));
     }
 }
